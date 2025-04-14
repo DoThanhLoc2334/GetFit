@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="GetFit" Class="dbGetFitDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Table Name="dbo.emails" Member="emails">
+    <Type Name="email">
+      <Column Name="emailid" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="userid" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="emailtype" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="timesend" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="status" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="user_email" Member="user" ThisKey="userid" OtherKey="user_id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.workouts" Member="workouts">
+    <Type Name="workout">
+      <Column Name="workoutid" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="musclegroup" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="videourl" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="reps" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="workout_workoutplandetail" Member="workoutplandetails" ThisKey="workoutid" OtherKey="workoutid" Type="workoutplandetail" />
+    </Type>
+  </Table>
+  <Table Name="dbo.orderdetails" Member="orderdetails">
+    <Type Name="orderdetail">
+      <Column Name="orderid" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="planid" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="quantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="price" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="orderdetailid" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Association Name="order_orderdetail" Member="order" ThisKey="orderid" OtherKey="orderid" Type="order" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.orders" Member="orders">
+    <Type Name="order">
+      <Column Name="orderid" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="orderdate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="totalamount" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="status" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="ispayment" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="isship" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="delivery_date" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="order_orderdetail" Member="orderdetails" ThisKey="orderid" OtherKey="orderid" Type="orderdetail" />
+      <Association Name="user_order" Member="user" ThisKey="user_id" OtherKey="user_id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.users" Member="users">
+    <Type Name="user">
+      <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="user_fullname" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="username" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="password" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="email" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="phonenumber" Type="System.String" DbType="VarChar(12)" CanBeNull="true" />
+      <Column Name="user_dob" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="createdat" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Role" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="user_email" Member="emails" ThisKey="user_id" OtherKey="userid" Type="email" />
+      <Association Name="user_order" Member="orders" ThisKey="user_id" OtherKey="user_id" Type="order" />
+      <Association Name="user_workoutplan" Member="workoutplans" ThisKey="user_id" OtherKey="userid" Type="workoutplan" />
+    </Type>
+  </Table>
+  <Table Name="dbo.workoutplandetails" Member="workoutplandetails">
+    <Type Name="workoutplandetail">
+      <Column Name="planid" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="workoutid" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="workoutday" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="sets" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="reps" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="workout_workoutplandetail" Member="workout" ThisKey="workoutid" OtherKey="workoutid" Type="workout" IsForeignKey="true" />
+      <Association Name="workoutplan_workoutplandetail" Member="workoutplan" ThisKey="planid" OtherKey="planid" Type="workoutplan" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.workoutplans" Member="workoutplans">
+    <Type Name="workoutplan">
+      <Column Name="planid" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="userid" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="planname" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="createdat" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="startdate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="duration" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="goal" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="notes" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="price" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Association Name="workoutplan_workoutplandetail" Member="workoutplandetails" ThisKey="planid" OtherKey="planid" Type="workoutplandetail" />
+      <Association Name="user_workoutplan" Member="user" ThisKey="userid" OtherKey="user_id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

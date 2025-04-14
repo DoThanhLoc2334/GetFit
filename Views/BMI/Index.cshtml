@@ -1,0 +1,129 @@
+﻿@{
+    ViewBag.Title = "BMI Calculator";
+}
+
+<header class="banner">
+    <div class="banner-content">
+        <h1>Welcome to GetFit </h1>
+        <p>Track your health and achieve your fitness goals with our easy-to-use BMI tool!</p>
+        <a href="@Url.Action("Index", "Workout")" class="btn btn-primary">Explore More</a>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row top-row">
+        <!-- BMI Classification -->
+        <div class="carousel-container">
+            <h2>BMI Classification</h2>
+            <div class="carousel-content">
+                <div class="bmi-slide active">
+                    <h3>Normal</h3>
+                    <p><strong>18.5 - 24.9</strong></p>
+                    <p>Normal body, maintain a healthy diet and lifestyle!</p>
+                </div>
+                <div class="bmi-slide">
+                    <h3>Overweight</h3>
+                    <p><strong>25 - 29.9</strong></p>
+                    <p>Overweight body, should apply diet and exercise to get back in shape!</p>
+                </div>
+                <div class="bmi-slide">
+                    <h3>Obesity Level 1</h3>
+                    <p><strong>30 - 34.9</strong></p>
+                    <p>You are in the obesity group I. Obesity is a condition where you have a body fat percentage higher than the safe level for health. With this condition lasting, you may face many health and lifestyle issues!</p>
+                </div>
+                <div class="bmi-slide">
+                    <h3>Obesity Level 2</h3>
+                    <p><strong>35 - 39.9</strong></p>
+                    <p>You are in the obesity group II. Obesity is a condition where you have a body fat percentage higher than the safe level for health. With this condition lasting, you may face many health and lifestyle issues.</p>
+                </div>
+                <div class="bmi-slide">
+                    <h3>Obesity Level 3</h3>
+                    <p><strong>>= 40</strong></p>
+                    <p>You are in the obesity group III. Obesity is a condition where you have a body fat percentage higher than the safe level for health. With this condition lasting, you may face many health and lifestyle issues.</p>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="btn btn-control" onclick="prevSlide()">←</button>
+                <button class="btn btn-control" onclick="nextSlide()">→</button>
+            </div>
+        </div>
+
+        <!-- Calculate BMI -->
+        <div class="bmi-calculator">
+            <h2>ONLINE BMI CALCULATOR</h2>
+            <form method="post" action="@Url.Action("calculateBMI", "BMI")">
+                <div class="input-group">
+                    <label>Height (cm): </label>
+                    <input type="number" name="height" required min="50" max="250">
+                </div>
+                <div class="input-group">
+                    <label>Weight (kg): </label>
+                    <input type="number" name="weight" required min="10" max="300">
+                </div>
+                <button type="submit" class="btn">CALCULATE BMI NOW</button>
+            </form>
+            @if (ViewBag.BMI != null)
+            {
+                <div class="result">
+                    <p>Your BMI: <strong>@ViewBag.BMI</strong></p>
+                    <p>Classification: <strong>@ViewBag.Category</strong></p>
+                </div>
+            }
+            <p class="note">
+                *Note:
+                The BMI formula is applicable to both men and women, for adults (over 18 years old).
+                Not applicable to pregnant women, athletes, the elderly, and varies between countries.
+            </p>
+        </div>
+    </div>
+
+    <div class="row bottom-row">
+        <div class="image-section">
+            <img src="~/Content/images/tablebmi.jpg" alt="BMI Category">
+        </div>
+        <div class="bmi-info-section">
+            <h2>What is BMI? How to calculate BMI</h2>
+            <p>
+                BMI stands for "Body Mass Index", which is a standard measurement used to assess the balance between a person's weight and height. BMI helps you classify your health status as overweight, normal, underweight, or thin. The results of calculating BMI online help you know what condition your body is in and adjust to be healthier.
+                BMI is calculated using the following formula: BMI = Weight / Height ^ 2
+                - Weight in kg
+                - Height in m
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3>GetFit</h3>
+            <p>Your ultimate fitness companion to achieve a healthier lifestyle.</p>
+        </div>
+        <div class="footer-section">
+            <h3>Contact Us</h3>
+            <p>Email: doloc2300@gmail.com</p>
+            <p>Phone: 0359157985</p>
+            <p>Address: 97 TL 19, 12 District, HCM City</p>
+        </div>
+        <div class="footer-section">
+            <h3>Follow Us</h3>
+            <div class="social-links">
+                <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 GetFit. All rights reserved.</p>
+    </div>
+</footer>
+
+
+
+@section Scripts {
+    <script src="~/Scripts/ClassificationBMI.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+}

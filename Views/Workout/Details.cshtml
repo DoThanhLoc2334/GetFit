@@ -1,0 +1,40 @@
+﻿@model GetFit.Models.workout
+
+@{
+    ViewBag.Title = "Workout Details";
+}
+
+<h2>Workout Details</h2>
+
+<div class="form-group">
+    <label>Workout Name:</label>
+    <p>@Model.name</p>
+</div>
+
+<div class="form-group">
+    <label>Muscle Group:</label>
+    <p>@Model.musclegroup</p>
+</div>
+
+<div class="form-group">
+    <label>Reps:</label>
+    <p>@Model.reps</p>
+</div>
+
+<div class="form-group">
+    <label>Video:</label><br />
+    @if (!string.IsNullOrEmpty(Model.videourl))
+    {
+        <video width="320" height="240" controls>
+            <source src="@Url.Content(Model.videourl)" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    }
+    else
+    {
+        <p>No video available.</p>
+    }
+</div>
+
+<a href="@Url.Action("Index", "Workout")" class="btn btn-secondary">Back to List</a>
+<a href="@Url.Action("Edit", "Workout", new { id = Model.workoutid })" class="btn btn-primary">Edit</a>

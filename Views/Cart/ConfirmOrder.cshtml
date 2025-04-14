@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Schedule Confirmation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container text-center" style="margin-top: 50px;">
+    <h2 class="text-success">✅ Your workout schedule has been confirmed!</h2>
+    <p class="lead">Thank you for scheduling your workout. Stay committed and keep improving your health!</p>
+
+    <div style="margin-top: 20px;">
+        <h4>👉 Next, you can:</h4>
+        <ul class="list-unstyled">
+            <li>📌 <a href="@Url.Action("Index", "Workout")" class="btn btn-primary">Start your workout now</a></li>
+            <li>🔍 <a href="@Url.Action("Index", "BMI")" class="btn btn-secondary">Calculator BMI NOW</a></li>
+            
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,151 @@
+﻿@model GetFit.ViewModels.WorkoutPlanViewModel
+@{
+    ViewBag.Title = "Workout Plan Details";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>@Model.PlanName</h2>
+        <div>
+            <a href="@Url.Action("Edit", new { id = Model.PlanID })" class="btn btn-warning">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <a href="@Url.Action("Index")" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <strong>Plan ID:</strong> @Model.PlanID
+        </div>
+        <div class="col-md-3">
+            <strong>Start Date:</strong> @(Model.StartDate?.ToString("yyyy-MM-dd") ?? "N/A")
+        </div>
+        <div class="col-md-3">
+            <strong>Duration:</strong> @(Model.Duration?.ToString() + " weeks" ?? "N/A")
+        </div>
+        <div class="col-md-3">
+            <strong>Goal:</strong> @(Model.Goal ?? "N/A")
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Workout Schedule</h5>
+        </div>
+        <div class="card-body p-0">
+            @if (Model.WorkoutDetailsGrouped != null && Model.WorkoutDetailsGrouped.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>Muscle Group</th>
+                                <th>Workout</th>
+                                <th>Sets</th>
+                                <th>Reps</th>
+                                <th>Video</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var dayGroup in Model.WorkoutDetailsGrouped)
+                            {
+                                var firstWorkout = dayGroup.Workouts.First();
+                                <tr>
+                                    <td rowspan="@dayGroup.Workouts.Count" class="align-middle bg-light">
+                                        @dayGroup.WorkoutDay
+                                    </td>
+                                    <td>@firstWorkout.MuscleGroup</td>
+                                    <td>@firstWorkout.WorkoutName</td>
+                                    <td>@firstWorkout.Sets</td>
+                                    <td>@firstWorkout.Reps</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(firstWorkout.VideoUrl))
+                                        {
+                                            <button class="btn btn-sm btn-primary video-btn" data-video="@firstWorkout.VideoUrl">
+                                                <i class="fas fa-play"></i> Play
+                                            </button>
+                                        }
+                                    </td>
+                                </tr>
+
+                                foreach (var workout in dayGroup.Workouts.Skip(1))
+                                {
+                                    <tr>
+                                        <td>@workout.MuscleGroup</td>
+                                        <td>@workout.WorkoutName</td>
+                                        <td>@workout.Sets</td>
+                                        <td>@workout.Reps</td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(workout.VideoUrl))
+                                            {
+                                                <button class="btn btn-sm btn-primary video-btn" data-video="@workout.VideoUrl">
+                                                    <i class="fas fa-play"></i> Play
+                                                </button>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info m-3">
+                    No workouts scheduled for this plan.
+                    <a href="@Url.Action("Edit", new { id = Model.PlanID })" class="btn btn-sm btn-primary ml-2">
+                        Add Workouts
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="videoModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Workout Video</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="ratio ratio-16x9">
+                    <video id="workoutVideo" controls class="w-100">
+                        <source id="videoSource" src="" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*@section Scripts {
+        <script src="~/Scripts/videoModal.js"></script>
+
+    }*@
+
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.video-btn').click(function () {
+                var videoUrl = $(this).data('video');
+                $('#videoSource').attr('src', videoUrl);
+                $('#workoutVideo')[0].load();
+                $('#videoModal').modal('show');
+            });
+
+            $('#videoModal').on('hidden.bs.modal', function () {
+                $('#workoutVideo')[0].pause();
+                $('#videoSource').attr('src', '');
+            });
+        });
+    </script>
+}

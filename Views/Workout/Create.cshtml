@@ -1,0 +1,31 @@
+﻿@model GetFit.Models.workout
+
+<h2>Add New Workout</h2>
+
+@using (Html.BeginForm("Create", "Workout", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <label for="name">Workout Name</label>
+        @Html.TextBoxFor(m => m.name, new { @class = "form-control", required = "required" })
+    </div>
+
+    <div class="form-group">
+        <label for="musclegroup">Muscle Group</label>
+        @Html.DropDownListFor(m => m.musclegroup, new SelectList(new[] { "Chest", "Back", "Shoulders", "Legs", "Abs", "Biceps", "Triceps" }), "Select Group", new { @class = "form-control", required = "required" })
+    </div>
+
+    <div class="form-group">
+        <label for="reps">Reps</label>
+        @Html.TextBoxFor(m => m.reps, new { @class = "form-control", type = "number", required = "required" })
+    </div>
+
+    <div class="form-group">
+        <label for="videofile">Upload Video</label>
+        <input type="file" name="videoFile" class="form-control" accept="video/*" required />
+    </div>
+
+
+    <button type="submit" class="btn btn-success">Create</button>
+    @Html.ActionLink("Cancel", "Index")
+}

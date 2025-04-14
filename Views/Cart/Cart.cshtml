@@ -1,0 +1,60 @@
+﻿@model IEnumerable<GetFit.Models.Cart>
+
+@{
+    ViewBag.Title = "Cart";
+}
+
+<h2>Cart</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th> @Html.DisplayNameFor(model => model.plan_id) </th>
+        <th> @Html.DisplayNameFor(model => model.workout_name) </th>
+        <th> @Html.DisplayNameFor(model => model.duration) </th>
+        <th> @Html.DisplayNameFor(model => model.price) </th>
+        <th> @Html.DisplayNameFor(model => model.quantity) </th>
+        <th> @Html.DisplayNameFor(model => model.Total) </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td> @Html.DisplayFor(modelItem => item.plan_id) </td>
+            <td> @Html.DisplayFor(modelItem => item.workout_name) </td>
+            <td> @Html.DisplayFor(modelItem => item.duration) </td>
+            <td> @String.Format("{0:0,0}", item.price) USD </td>
+            <td>
+                <input type="number" min="1" name="txtQuantity"
+                       value="@item.quantity" />
+            </td>
+            <td> @Html.DisplayFor(modelItem => item.Total) </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {@id = item.plan_id}, new {@class = " btn"})
+                @Html.ActionLink("Delete", "CartDelete", new { @id = item.plan_id }, new { @class = "btn btn-danger" })
+            </td>
+            <td>
+                <input type="submit" value="Update" class="btn btn-success" />
+            </td>
+        </tr>
+    }
+    <tr style="font-weight:bold; text-align:left; color:red">
+        <td colspan="2"> Quantity Sum: @ViewBag.sumProductQuantity </td>
+        <td colspan="2"> Quantity Total: @ViewBag.sumQuantity </td>
+        <td colspan="4"> Total: @String.Format("{0:0,0}", @ViewBag.Total) USD </td>
+    </tr>
+    <tr style="font-weight:bold; color:blue; text-align:right">
+        <td colspan="5">
+            @Html.ActionLink("Cart Delete", "AllCartDelete", null, new { @class = "btn btn-danger" })
+        </td>
+    </tr>
+    <tr style="font-weight:bold; color:yellow; text-align:right">
+        <td colspan="5">
+            @Html.ActionLink("Send mail", "PlaceOrder", "Cart", null, new { @class = "btn btn-warning" })
+            <a href="@Url.Content("~/VNPAY/VNPAY_CS_ASPX/vnpay_pay.aspx")" class="btn btn-primary">Place Order</a>
+        </td>
+    </tr>
+</table>

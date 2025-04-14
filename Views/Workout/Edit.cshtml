@@ -1,0 +1,54 @@
+﻿@model GetFit.Models.workout
+
+@{
+    ViewBag.Title = "Edit Workout";
+}
+
+<h2>Edit Workout</h2>
+
+@using (Html.BeginForm("Edit", "Workout", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.workoutid)
+
+    <div class="form-group">
+        <label for="name">Workout Name</label>
+        @Html.TextBoxFor(model => model.name, new { @class = "form-control", required = "required" })
+    </div>
+
+    <div class="form-group">
+        <label for="muscleGroup">Muscle Group</label>
+        @Html.DropDownListFor(m => m.musclegroup, new SelectList(new[] { "Chest", "Back", "Shoulders", "Legs", "Abs", "Biceps", "Triceps" }), "Select Group", new { @class = "form-control", required = "required" })
+    </div>
+
+    <div class="form-group">
+        <label for="reps">Reps</label>
+        @Html.TextBoxFor(model => model.reps, new { @class = "form-control", type = "number", required = "required" })
+    </div>
+
+    <div class="form-group">
+        <label>Current Video</label>
+        @if (!string.IsNullOrEmpty(Model.videourl))
+        {
+            <div>
+                <video width="320" height="240" controls class="mt-2">
+                    <source src="@Url.Content(Model.videourl)" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        }
+        else
+        {
+            <p>No video uploaded.</p>
+        }
+    </div>
+
+
+    <div class="form-group">
+        <label for="videoFile">Upload New Video (Optional)</label>
+        <input type="file" name="videoFile" class="form-control" accept="video/*" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    @Html.ActionLink("Cancel", "Index", null, new { @class = "btn" })
+}

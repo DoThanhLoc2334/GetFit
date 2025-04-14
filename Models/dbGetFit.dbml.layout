@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 12.25" name="dbGetFit">
+  <DataContextMoniker Name="/dbGetFitDataContext" />
+  <nestedChildShapes>
+    <classShape Id="c60b234d-ce8f-49a3-a8d8-f2233eacda2e" absoluteBounds="3.5, 1.25, 2, 1.7708968098958329">
+      <DataClassMoniker Name="/dbGetFitDataContext/email" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2bb15baf-ba9c-414c-8b56-462b392b9b3b" absoluteBounds="3.515, 1.71, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="fa4be233-da5a-49d4-af06-18dc7e9546d6" absoluteBounds="3.5, 10.25, 2, 1.7708968098958344">
+      <DataClassMoniker Name="/dbGetFitDataContext/workout" />
+      <nestedChildShapes>
+        <elementListCompartment Id="15d2cc43-4cff-4172-a5c1-252fe279c9c5" absoluteBounds="3.515, 10.71, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="ca9070fe-4d8d-4552-b07b-8ec8122c8cf3" absoluteBounds="6.25, 4, 2, 1.7708968098958326">
+      <DataClassMoniker Name="/dbGetFitDataContext/orderdetail" />
+      <nestedChildShapes>
+        <elementListCompartment Id="0dfe4cb1-2be8-48bb-9c99-d4b167a303aa" absoluteBounds="6.265, 4.46, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="8376de28-d3ef-49ef-9889-397b07bceb3f" absoluteBounds="3.5, 3.75, 2, 2.3478011067708331">
+      <DataClassMoniker Name="/dbGetFitDataContext/order" />
+      <nestedChildShapes>
+        <elementListCompartment Id="10590589-ad6f-4297-94c0-4edb19b1ffae" absoluteBounds="3.515, 4.21, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="4d001f10-0893-4b96-a8da-c76e886009ac" absoluteBounds="0.75, 4, 2, 2.5401025390625005">
+      <DataClassMoniker Name="/dbGetFitDataContext/user" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7e08bb58-2c2d-4ae2-814b-8d63c1c957c1" absoluteBounds="0.765, 4.46, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d0e10909-6ae4-4ad3-947d-1d66ac3578b0" absoluteBounds="6.25, 7.25, 2, 1.7708968098958335">
+      <DataClassMoniker Name="/dbGetFitDataContext/workoutplandetail" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2bcd2352-e75f-4eef-bf99-e33a36086373" absoluteBounds="6.265, 7.71, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="4d07a4fa-62db-4340-8ec1-05b81330530f" absoluteBounds="3.5, 6.875, 2, 2.5401025390624996">
+      <DataClassMoniker Name="/dbGetFitDataContext/workoutplan" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7c240e98-969e-4c2e-b3ab-45b948fb78e0" absoluteBounds="3.515, 7.335, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(5.5 : 4.88544840494792); (6.25 : 4.88544840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/dbGetFitDataContext/order/order_orderdetail" />
+      <nodes>
+        <classShapeMoniker Id="8376de28-d3ef-49ef-9889-397b07bceb3f" />
+        <classShapeMoniker Id="ca9070fe-4d8d-4552-b07b-8ec8122c8cf3" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(1.75 : 4); (1.75 : 2.13544840494792); (3.5 : 2.13544840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/dbGetFitDataContext/user/user_email" />
+      <nodes>
+        <classShapeMoniker Id="4d001f10-0893-4b96-a8da-c76e886009ac" />
+        <classShapeMoniker Id="c60b234d-ce8f-49a3-a8d8-f2233eacda2e" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 5.04890055338542); (3.5 : 5.04890055338542)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/dbGetFitDataContext/user/user_order" />
+      <nodes>
+        <classShapeMoniker Id="4d001f10-0893-4b96-a8da-c76e886009ac" />
+        <classShapeMoniker Id="8376de28-d3ef-49ef-9889-397b07bceb3f" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 11.1354484049479); (7.25 : 11.1354484049479); (7.25 : 9.02089680989583)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/dbGetFitDataContext/workout/workout_workoutplandetail" />
+      <nodes>
+        <classShapeMoniker Id="fa4be233-da5a-49d4-af06-18dc7e9546d6" />
+        <classShapeMoniker Id="d0e10909-6ae4-4ad3-947d-1d66ac3578b0" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 8.13544840494792); (6.25 : 8.13544840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/dbGetFitDataContext/workoutplan/workoutplan_workoutplandetail" />
+      <nodes>
+        <classShapeMoniker Id="4d07a4fa-62db-4340-8ec1-05b81330530f" />
+        <classShapeMoniker Id="d0e10909-6ae4-4ad3-947d-1d66ac3578b0" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(1.75 : 6.5401025390625); (1.75 : 8.14505126953125); (3.5 : 8.14505126953125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/dbGetFitDataContext/user/user_workoutplan" />
+      <nodes>
+        <classShapeMoniker Id="4d001f10-0893-4b96-a8da-c76e886009ac" />
+        <classShapeMoniker Id="4d07a4fa-62db-4340-8ec1-05b81330530f" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

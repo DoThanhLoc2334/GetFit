@@ -1,0 +1,215 @@
+﻿@model PagedList.IPagedList<GetFit.Models.workout>
+@using PagedList.Mvc
+
+<h2>List of Exercise</h2>
+
+<p>
+    @if(Session["Role"] != null && Session["Role"].ToString() == "Admin")
+    {
+        @Html.ActionLink("Create New Workout", "Create", null, new { @class = "btn btn-success" })
+    }
+</p>
+
+<ul class="menu">
+    @foreach (var group in new[] { "Chest", "Back", "Shoulders", "Legs", "Abs", "Biceps", "Triceps" })
+    {
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle">@group</a>
+            <ul class="submenu">
+                @foreach (var workout in (ViewBag.AllWorkouts as List<GetFit.Models.workout>).Where(w => w.musclegroup == group))
+                {
+                    <li><a href="#workout-@workout.workoutid">@workout.name</a></li>
+                }
+            </ul>
+        </li>
+    }
+</ul>
+
+<!-- Danh sách bài tập -->
+@foreach (var workout in Model)
+{
+    <div class="exercise-item" id="workout-@workout.workoutid">
+        <h3>@workout.name</h3>
+        <p><strong>Nhóm cơ:</strong> @workout.musclegroup</p>
+        <p><strong>Reps:</strong> @workout.reps</p>
+
+        @if (!string.IsNullOrEmpty(workout.videourl))
+        {
+            <video width="480" height="270" controls>
+                <source src="@workout.videourl" type="video/mp4">
+            </video>
+        }
+
+        <div class="exercise-actions">
+            @Html.ActionLink("Read More", "Details", new { id = workout.workoutid }, new { @class = "btn" })
+            @Html.ActionLink("Edit", "Edit", new { id = workout.workoutid }, new { @class = "btn" })
+            @Html.ActionLink("Delete", "Delete", new { id = workout.workoutid }, new { @class = "btn" })
+        </div>
+    </div>
+}
+
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+    {
+        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+        DisplayLinkToLastPage = PagedListDisplayMode.Always,
+        DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+        DisplayLinkToNextPage = PagedListDisplayMode.Always,
+        MaximumPageNumbersToDisplay = 5
+    })
+</div>
+
+<style>
+    .menu {
+        list-style-type: none;
+        padding: 0;
+        margin: 20px 0;
+        display: flex;
+        background: #111;
+        justify-content: center;
+        border-bottom: 2px solid #ffcc00;
+    }
+
+        .menu li {
+            position: relative;
+            margin: 0 15px;
+        }
+
+        .menu a.dropdown-toggle {
+            text-decoration: none;
+            color: white;
+            padding: 12px 20px;
+            display: block;
+            transition: background 0.3s ease-in-out;
+        }
+
+            .menu a.dropdown-toggle:hover {
+                background: #ffcc00;
+                color: black;
+                border-radius: 5px;
+            }
+
+    /* Định dạng submenu (dropdown) */
+    .dropdown:hover .submenu {
+        display: block;
+    }
+
+    .submenu {
+        display: none;
+        position: absolute;
+        background: #222;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        width: 200px;
+        border-radius: 5px;
+        z-index: 1000;
+    }
+
+        .submenu li {
+            border-bottom: 1px solid #333;
+        }
+
+        .submenu a {
+            padding: 10px;
+            color: white;
+            display: block;
+            transition: background 0.3s ease-in-out;
+        }
+
+            .submenu a:hover {
+                background: #ffdb4d;
+                color: black;
+            }
+
+    /* Định dạng cho exercise-item */
+    .exercise-item {
+        padding: 20px;
+        border-radius: 10px;
+        background: #333;
+        color: white;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        margin-bottom: 20px;
+        transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+    }
+
+        .exercise-item:hover {
+            transform: translateY(-5px);
+            background: #555;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+    video {
+        border-radius: 5px;
+    }
+
+    .exercise-actions {
+        margin-top: 10px;
+    }
+
+        .exercise-actions .btn {
+            margin-right: 5px;
+        }
+
+    .pagination-container {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .pagination li {
+        display: inline-block;
+        margin: 0 5px;
+    }
+
+        .pagination li a {
+            padding: 8px 12px;
+            background-color: #ffcc00;
+            color: black;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.3s ease-in-out;
+        }
+
+            .pagination li a:hover {
+                background-color: #ffdb4d;
+            }
+
+        .pagination li.disabled a {
+            background-color: #444;
+            color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .pagination li.active a {
+            background-color: #28a745;
+            color: white;
+        }
+</style>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.submenu a').on('click', function (e) {
+                e.preventDefault();
+                var target = $(this).attr('href');
+                var $targetElement = $(target);
+
+                if ($targetElement.length) {
+                    $('html, body').animate({
+                        scrollTop: $targetElement.offset().top - 50 
+                    }, 500);
+                } else {
+                    var workoutId = target.replace('#workout-', '');
+                    $.ajax({
+                        url: '@Url.Action("GetWorkoutPage", "Workout")',
+                        type: 'GET',
+                        data: { workoutId: workoutId },
+                        success: function (page) {
+                            window.location.href = '@Url.Action("Index", "Workout")' + '?page=' + page + target;
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

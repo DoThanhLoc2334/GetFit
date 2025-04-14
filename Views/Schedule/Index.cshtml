@@ -1,0 +1,52 @@
+﻿@model IEnumerable<GetFit.ViewModels.WorkoutPlanViewModel>
+
+@{
+    ViewBag.Title = "Workout Plans";
+}
+
+<h2>Workout Plans</h2>
+
+<p>
+    <a href="@Url.Action("Create", "Schedule")" class="btn btn-primary">Create New Plan</a>
+</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Plan Name</th>
+            <th>Start Date</th>
+            <th>Duration (weeks)</th>
+            <th>Goal</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var plan in Model)
+            {
+                <tr>
+                    <td>@(string.IsNullOrEmpty(plan.PlanName) ? "N/A" : plan.PlanName)</td>
+                    <td>@(plan.StartDate.HasValue ? plan.StartDate.Value.ToString("yyyy-MM-dd") : "N/A")</td>
+                    <td>@(plan.Duration.HasValue ? plan.Duration.Value.ToString() : "N/A")</td>
+                    <td>@(string.IsNullOrEmpty(plan.Goal) ? "N/A" : plan.Goal)</td>
+                    <td>
+                        <a href="@Url.Action("Details", "Schedule", new { id = plan.PlanID })" class="btn btn-info btn-sm">View Details</a>
+                        <a href="@Url.Action("AddCart", "Cart", new { id = plan.PlanID, strURL = Request.Url?.ToString() })" class="btn btn-success btn-sm ms-2"><i class="fas fa-shopping-cart"></i> Order</a>
+
+                        @if (Session["Role"] != null && Session["Role"].ToString() == "Admin")
+                        {
+                            <a href="@Url.Action("Delete", "Schedule", new { id = plan.PlanID })" class="btn btn-danger btn-sm ms-2">Delete</a>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">No workout plans available.</td>
+            </tr>
+        }
+    </tbody>
+</table>

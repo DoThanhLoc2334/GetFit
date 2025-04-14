@@ -1,0 +1,141 @@
+﻿@model GetFit.Models.WorkoutPlan
+
+@{
+    ViewBag.Title = "Create Workout Plan";
+}
+
+<h2>Create Workout Plan</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.planname, "Plan Name:")
+        @Html.TextBoxFor(model => model.planname, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.planname, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.startdate, "Start Date:")
+        @Html.TextBoxFor(model => model.startdate, new { @class = "form-control", type = "date" })
+        @Html.ValidationMessageFor(model => model.startdate, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.price, "Price (USD):")
+        @Html.TextBoxFor(model => model.price, new { @class = "form-control", type = "number", step = "0.01", min = "0" })
+        @Html.ValidationMessageFor(model => model.price, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.duration, "Duration (weeks):")
+        @Html.TextBoxFor(model => model.duration, new { @class = "form-control", type = "number", min = "1" })
+        @Html.ValidationMessageFor(model => model.duration, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.goal, "Goal:")
+        @Html.TextBoxFor(model => model.goal, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.goal, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.notes, "Notes:")
+        @Html.TextAreaFor(model => model.notes, new { @class = "form-control", rows = "3" })
+        @Html.ValidationMessageFor(model => model.notes, "", new { @class = "text-danger" })
+    </div>
+
+    <h4>Workout Schedule</h4>
+    <div id="workout-schedule">
+        <div class="form-group workout-day">
+            <label>Day:</label>
+            <select name="days[]" class="form-control day-select">
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+            </select>
+
+            <div class="workouts-container">
+                <div class="workout-entry">
+                    <label>Workout:</label>
+                    <select name="workouts[]" class="form-control workout-select">
+                        @foreach (var muscleGroup in (List<GetFit.ViewModels.GroupedWorkoutViewModel>)ViewBag.Workouts)
+                        {
+                            <optgroup label="@muscleGroup.MuscleGroup">
+                                @foreach (var workout in muscleGroup.Workouts)
+                                {
+                                    <option value="@workout.WorkoutId">@workout.Name</option>
+                                }
+                            </optgroup>
+                        }
+                    </select>
+
+                    <label>Sets:</label>
+                    <input type="number" name="sets[]" class="form-control" value="3" min="1" />
+
+                    <label>Reps:</label>
+                    <input type="number" name="reps[]" class="form-control" value="12" min="1" />
+
+                    <button type="button" class="btn btn-danger remove-workout">Remove Workout</button>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-primary add-workout">Add Another Workout</button>
+            <button type="button" class="btn btn-danger remove-day">Remove Day</button>
+        </div>
+    </div>
+
+    <button type="button" id="add-day" class="btn btn-primary">Add Another Day</button>
+
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-success">Create Plan</button>
+        <a href="@Url.Action("Index", "Schedule")" class="btn btn-secondary">Cancel</a>
+    </div>
+}
+
+
+@*@section Scripts {
+        <script src="~/Scripts/CreateSchedule.js"></script>
+
+    }*@
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#add-day').click(function () {
+                var newDay = $('.workout-day:first').clone();
+                newDay.find('input').val('');
+                newDay.find('.workouts-container').html($('.workout-day:first .workouts-container').html());
+                $('#workout-schedule').append(newDay);
+            });
+
+            $(document).on('click', '.add-workout', function () {
+                var workoutEntry = $(this).siblings('.workouts-container').find('.workout-entry:first').clone();
+                workoutEntry.find('input').val('');
+                workoutEntry.find('select').val('');
+                $(this).siblings('.workouts-container').append(workoutEntry);
+            });
+
+            $(document).on('click', '.remove-workout', function () {
+                if ($(this).closest('.workouts-container').find('.workout-entry').length > 1) {
+                    $(this).closest('.workout-entry').remove();
+                }
+            });
+
+            $(document).on('click', '.remove-day', function () {
+                if ($('.workout-day').length > 1) {
+                    $(this).closest('.workout-day').remove();
+                }
+            });
+
+            $(document).on('change', '.day-select', function () {
+                var dayValue = $(this).val();
+                $(this).closest('.workout-day').find('input[name="days[]"]').val(dayValue);
+            });
+        });
+    </script>
+}
